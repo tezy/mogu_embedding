@@ -476,7 +476,7 @@ def main(_):
       if FLAGS.loss_model == 'center_loss':
           tf.logging.info('chose center loss')
           prelogits_center_loss, _ = metric_learning_net.center_loss(prelogits, image_id_batch,
-                                                           FLAGS.center_moving_average_ratio, dataset.num_id)
+                                                           FLAGS.center_moving_average_ratio, dataset.num_image_id)
           tf.add_to_collection(tf.GraphKeys.LOSSES, prelogits_center_loss * FLAGS.image_id_weight)
       else:
           pass

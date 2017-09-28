@@ -11,7 +11,6 @@ INPUT_IMAGE_SIZE = 299
 
 
 class DataSet(object):
-    num_id = 626
     num_cls = 35
     num_clr = 75
     num_attr = 1160
@@ -81,6 +80,10 @@ class DataSet(object):
     @property
     def num_samples(self):
         return len(self._image_path)
+
+    @property
+    def num_image_id(self):
+        return self._image_id_label[-1] + 1
 
 
 def image_info_loader(dataset_dir, filename):
