@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="391d9d73-c58a-4a10-8c7d-baed1101bae8" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cub200.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/tmp_c.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/data_process.py" afterPath="$PROJECT_DIR$/data/data_process.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/metric_learning_net.py" afterPath="$PROJECT_DIR$/model/metric_learning_net.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/tmp.py" afterPath="$PROJECT_DIR$/tests/tmp.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/train_image_classifier.py" afterPath="$PROJECT_DIR$/train_image_classifier.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/train_image_retrieval.py" afterPath="$PROJECT_DIR$/train_image_retrieval.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,41 +21,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="data_disp.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/data_disp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tmp.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/tmp.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cub200.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cub200.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="56" column="56" lean-forward="false" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="metric_learning_net.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="metric_learning_net.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/metric_learning_net.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="82">
-              <caret line="211" column="77" lean-forward="false" selection-start-line="211" selection-start-column="72" selection-end-line="211" selection-end-column="77" />
+            <state relative-caret-position="71">
+              <caret line="56" column="50" lean-forward="false" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="50" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -56,21 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="data_process.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/data_process.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="801" column="6" lean-forward="false" selection-start-line="801" selection-start-column="6" selection-end-line="801" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="train_image_classifier.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_image_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1680">
-              <caret line="225" column="25" lean-forward="true" selection-start-line="225" selection-start-column="25" selection-end-line="225" selection-end-column="25" />
+            <state relative-caret-position="160">
+              <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding>
                 <element signature="e#759#797#0" expanded="true" />
               </folding>
@@ -78,43 +45,67 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tmp_c.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tmp_c.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
-              <caret line="126" column="19" lean-forward="false" selection-start-line="126" selection-start-column="19" selection-end-line="126" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="inception_resnet_v2.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nets/inception_resnet_v2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
+            <state relative-caret-position="20">
               <caret line="294" column="23" lean-forward="false" selection-start-line="294" selection-start-column="14" selection-end-line="294" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="inception_utils.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nets/inception_utils.py">
+      <file leaf-file-name="data_process.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/data_process.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="563">
-              <caret line="63" column="40" lean-forward="false" selection-start-line="63" selection-start-column="40" selection-end-line="63" selection-end-column="40" />
+            <state relative-caret-position="80">
+              <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="preprocessing.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/preprocessing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3343">
+              <caret line="238" column="38" lean-forward="true" selection-start-line="238" selection-start-column="38" selection-end-line="238" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="train_image_retrieval.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="train_image_retrieval.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/train_image_retrieval.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="542" column="53" lean-forward="true" selection-start-line="542" selection-start-column="53" selection-end-line="542" selection-end-column="53" />
+            <state relative-caret-position="560">
+              <caret line="52" column="48" lean-forward="false" selection-start-line="52" selection-start-column="48" selection-end-line="52" selection-end-column="48" />
               <folding>
                 <element signature="e#759#797#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tf_logging.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/platform/tf_logging.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="201">
+              <caret line="80" column="4" lean-forward="false" selection-start-line="80" selection-start-column="4" selection-end-line="80" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dataset_loader.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/dataset_loader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="260">
+              <caret line="13" column="10" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -131,25 +122,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>model_name</find>
-      <find>train_image_size</find>
-      <find>max_number_of_steps</find>
-      <find>num_epoch</find>
-      <find>num_samples</find>
-      <find>conv2d</find>
-      <find>records_name</find>
-      <find>checkpoint_exclude_scopes</find>
-      <find>num_readers</find>
-      <find>moving_average_decay</find>
-      <find>save_dir</find>
-      <find>train_dir</find>
-      <find>sync_replicas</find>
-      <find>optimizer</find>
-      <find>clone_on_cpu</find>
-      <find>preprocessing_name</find>
-      <find>image_preprocessing_fn</find>
-      <find>AuxLogits</find>
-      <find>dataset_dir</find>
       <find>is_training</find>
       <find>cpu</find>
       <find>replica</find>
@@ -160,7 +132,26 @@
       <find>num_preprocessing_threads</find>
       <find>IMAGE_FILE_DIR</find>
       <find>num_epochs</find>
+      <find>loss</find>
+      <find>regula</find>
+      <find>regularization_losses</find>
+      <find>_gather_clone_loss</find>
+      <find>image_preprocessing_fn</find>
+      <find>model_fn</find>
+      <find>Clone</find>
+      <find>clone_fn</find>
+      <find>embedding_dim</find>
+      <find>weights</find>
+      <find>get_net</find>
+      <find>REGULARIZATION_LOSSES</find>
       <find>NUM</find>
+      <find>NUM_COLOR</find>
+      <find>weight_de</find>
+      <find>attribute_weight</find>
+      <find>network_model</find>
+      <find>image_id_weight</find>
+      <find>checkpoint_exclude_scopes</find>
+      <find>filename_dir</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -184,12 +175,14 @@
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/model/train_image_retrival.py" />
         <option value="$PROJECT_DIR$/cub200.py" />
-        <option value="$PROJECT_DIR$/model/metric_learning_net.py" />
         <option value="$PROJECT_DIR$/tmp_c.py" />
+        <option value="$PROJECT_DIR$/model/metric_learning_net.py" />
+        <option value="$PROJECT_DIR$/tests/tmp_classifier.py" />
+        <option value="$PROJECT_DIR$/data/data_process.py" />
+        <option value="$PROJECT_DIR$/tests/tmp.py" />
+        <option value="$PROJECT_DIR$/data/dataset_loader.py" />
         <option value="$PROJECT_DIR$/train_image_retrieval.py" />
         <option value="$PROJECT_DIR$/train_image_classifier.py" />
-        <option value="$PROJECT_DIR$/tests/tmp.py" />
-        <option value="$PROJECT_DIR$/data/data_process.py" />
       </list>
     </option>
   </component>
@@ -304,7 +297,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.tmp_c">
+  <component name="RunManager" selected="Python.train_image_retrieval">
     <configuration default="false" name="metric_learning_net" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -469,9 +462,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.tmp_c" />
-        <item index="1" class="java.lang.String" itemvalue="Python.metric_learning_net" />
-        <item index="2" class="java.lang.String" itemvalue="Python.train_image_retrieval" />
+        <item index="0" class="java.lang.String" itemvalue="Python.train_image_retrieval" />
+        <item index="1" class="java.lang.String" itemvalue="Python.tmp_c" />
+        <item index="2" class="java.lang.String" itemvalue="Python.metric_learning_net" />
         <item index="3" class="java.lang.String" itemvalue="Python.train_image_classifier" />
         <item index="4" class="java.lang.String" itemvalue="Python.train_image_retrival" />
       </list>
@@ -524,61 +517,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/298137840/ahocorasick.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="40" column="8" lean-forward="false" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/json/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="366" column="29" lean-forward="false" selection-start-line="366" selection-start-column="28" selection-end-line="366" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-120">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/math_ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="303" column="4" lean-forward="false" selection-start-line="303" selection-start-column="4" selection-end-line="303" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/argparse.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="1735" column="35" lean-forward="false" selection-start-line="1735" selection-start-column="31" selection-end-line="1735" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="175" column="46" lean-forward="false" selection-start-line="175" selection-start-column="39" selection-end-line="175" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-565">
@@ -599,14 +537,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="875">
           <caret line="333" column="63" lean-forward="false" selection-start-line="333" selection-start-column="63" selection-end-line="333" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/contrib/layers/python/layers/layers.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="817" column="4" lean-forward="false" selection-start-line="817" selection-start-column="4" selection-end-line="817" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -651,34 +581,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nets/resnet_v1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4934">
-          <caret line="342" column="63" lean-forward="false" selection-start-line="342" selection-start-column="63" selection-end-line="342" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nets/inception_v4.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1142">
-          <caret line="302" column="33" lean-forward="false" selection-start-line="302" selection-start-column="24" selection-end-line="302" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/training/supervisor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4894">
           <caret line="963" column="0" lean-forward="false" selection-start-line="963" selection-start-column="0" selection-end-line="963" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/losses/losses_impl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="595" column="4" lean-forward="false" selection-start-line="595" selection-start-column="4" selection-end-line="595" selection-end-column="4" />
           <folding />
         </state>
       </provider>
@@ -711,22 +617,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="191">
           <caret line="169" column="4" lean-forward="false" selection-start-line="169" selection-start-column="4" selection-end-line="169" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="3765" column="39" lean-forward="false" selection-start-line="3765" selection-start-column="25" selection-end-line="3765" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/preprocessing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="258" column="48" lean-forward="false" selection-start-line="258" selection-start-column="48" selection-end-line="258" selection-end-column="48" />
           <folding />
         </state>
       </provider>
@@ -835,22 +725,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_deploy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="192" column="36" lean-forward="false" selection-start-line="192" selection-start-column="32" selection-end-line="192" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nets/inception_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="563">
-          <caret line="63" column="40" lean-forward="false" selection-start-line="63" selection-start-column="40" selection-end-line="63" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/data_disp.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -875,26 +749,180 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/tmp.py">
+    <entry file="file://$PROJECT_DIR$/nets/resnet_v1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="1654">
+          <caret line="333" column="21" lean-forward="false" selection-start-line="333" selection-start-column="6" selection-end-line="333" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharmCE2017.1/system/python_stubs/298137840/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="68" column="6" lean-forward="true" selection-start-line="68" selection-start-column="6" selection-end-line="68" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/model_deploy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1140">
+          <caret line="197" column="63" lean-forward="false" selection-start-line="197" selection-start-column="42" selection-end-line="197" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3229">
+          <caret line="678" column="4" lean-forward="false" selection-start-line="678" selection-start-column="4" selection-end-line="678" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/contrib/layers/python/layers/layers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="1392" column="71" lean-forward="false" selection-start-line="1392" selection-start-column="53" selection-end-line="1392" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nets/inception_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="78" column="67" lean-forward="false" selection-start-line="78" selection-start-column="39" selection-end-line="78" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nets/inception_v4.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3034">
+          <caret line="120" column="4" lean-forward="false" selection-start-line="120" selection-start-column="4" selection-end-line="120" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/variables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="1198" column="11" lean-forward="false" selection-start-line="1198" selection-start-column="1" selection-end-line="1198" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/tmp_c.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="126" column="19" lean-forward="false" selection-start-line="126" selection-start-column="19" selection-end-line="126" selection-end-column="19" />
+        <state relative-caret-position="220">
+          <caret line="11" column="24" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tmp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="30" lean-forward="false" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#10#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/nn_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-219">
+          <caret line="175" column="66" lean-forward="false" selection-start-line="175" selection-start-column="56" selection-end-line="175" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/preprocessing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3343">
+          <caret line="238" column="38" lean-forward="true" selection-start-line="238" selection-start-column="38" selection-end-line="238" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/tmp_classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="152" column="48" lean-forward="true" selection-start-line="152" selection-start-column="48" selection-end-line="152" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#11#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/dataset_loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="13" column="10" lean-forward="false" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nets/inception_resnet_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="294" column="23" lean-forward="false" selection-start-line="294" selection-start-column="14" selection-end-line="294" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/platform/tf_logging.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="80" column="4" lean-forward="false" selection-start-line="80" selection-start-column="4" selection-end-line="80" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/metric_learning_net.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="71">
+          <caret line="56" column="50" lean-forward="false" selection-start-line="56" selection-start-column="45" selection-end-line="56" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/losses/losses_impl.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-389">
+          <caret line="138" column="10" lean-forward="false" selection-start-line="138" selection-start-column="4" selection-end-line="138" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/nn_ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-279">
+          <caret line="1514" column="4" lean-forward="false" selection-start-line="1514" selection-start-column="4" selection-end-line="1514" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/data_process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/train_image_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1680">
-          <caret line="225" column="25" lean-forward="true" selection-start-line="225" selection-start-column="25" selection-end-line="225" selection-end-column="25" />
+        <state relative-caret-position="160">
+          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
           <folding>
             <element signature="e#759#797#0" expanded="true" />
           </folding>
@@ -903,36 +931,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/train_image_retrieval.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="542" column="53" lean-forward="true" selection-start-line="542" selection-start-column="53" selection-end-line="542" selection-end-column="53" />
+        <state relative-caret-position="560">
+          <caret line="52" column="48" lean-forward="false" selection-start-line="52" selection-start-column="48" selection-end-line="52" selection-end-column="48" />
           <folding>
             <element signature="e#759#797#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nets/inception_resnet_v2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="294" column="23" lean-forward="false" selection-start-line="294" selection-start-column="14" selection-end-line="294" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/data_process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="801" column="6" lean-forward="false" selection-start-line="801" selection-start-column="6" selection-end-line="801" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/metric_learning_net.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="211" column="77" lean-forward="false" selection-start-line="211" selection-start-column="72" selection-end-line="211" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>

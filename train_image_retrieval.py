@@ -23,20 +23,21 @@ import tensorflow as tf
 
 from tensorflow.contrib import slim
 from model import model_deploy, metric_learning_net
+from data import dataset_loader
 
 
-# filename = 'mogu_full_info_one_color_train.csv'
-# filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding'
-# save_dir = '/home/deepinsight/tongzhen/vars/mogu_embedding'
-# ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
+filename = 'mogu_full_info_one_color_train.csv'
+filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding/metric_learning_sample'
+save_dir = '/home/deepinsight/tongzhen/vars/mogu_embedding'
+ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
 
 
-filename_dir = '/home/tze/Learning/dataset/mogu_embedding'
-filename = 'sample_local.csv'
-save_dir = '/home/tze/Learning/vars/mogu_embedding'
-ckpt_dir = '/home/tze/Learning/ckpt/standard/inception_v4.ckpt'
+# filename_dir = '/home/tze/Learning/dataset/mogu_embedding'
+# filename = 'sample_local.csv'
+# save_dir = '/home/tze/Learning/vars/mogu_embedding'
+# ckpt_dir = '/home/tze/Learning/ckpt/standard/inception_v4.ckpt'
 
-train_partial_layers = True
+train_partial_layers = None
 trainable_scopes = ','.join(['InceptionV4/Logits', 'InceptionV4/Embeddings', 'InceptionV4/Mixed_7d']) \
     if train_partial_layers else None
 checkpoint_exclude_scopes = trainable_scopes
@@ -44,6 +45,16 @@ checkpoint_exclude_scopes = trainable_scopes
 env = os.environ['CUDA_VISIBLE_DEVICES']
 num_gpus = len(env.split(','))
 
+tf.app.flags.DEFINE_integer('embedding_dims', 128, 'The dimension of embedding layers')
+tf.app.flags.DEFINE_float('class_weight', 0.4, 'The weight of class labels')
+tf.app.flags.DEFINE_float('color_weight', 0.3, 'The weight of color labels')
+tf.app.flags.DEFINE_float('attribute_weight', 0.5, 'The weight of attribute labels')
+
+tf.app.flags.DEFINE_float('image_id_weight', 0.7, 'The weight of image id labels')
+tf.app.flags.DEFINE_float('center_moving_average_ratio', 0.95, 'The moving average ratios of centers')
+
+tf.app.flags.DEFINE_string('network_model', 'labels_from_embedding', 'The network model of metric learning')
+tf.app.flags.DEFINE_string('loss_model', 'center_loss', 'The discriminative loss model, center_loss, triplet_loss, etc.')
 ##################################################################
 
 tf.app.flags.DEFINE_string(
@@ -206,7 +217,7 @@ tf.app.flags.DEFINE_integer(
     'batch_size', 32, 'The number of samples in each batch.')
 
 tf.app.flags.DEFINE_integer(
-    'num_epochs', 20, 'The number of training epochs.')
+    'num_epochs', 50, 'The number of training epochs.')
 
 tf.app.flags.DEFINE_integer(
     'train_image_size', 299, 'Train image size')
@@ -420,13 +431,16 @@ def main(_):
     ######################
     # Select the dataset #
     ######################
-    # dataset = dataset_factory.get_dataset(
-    #     FLAGS.dataset_name, FLAGS.dataset_split_name, FLAGS.dataset_dir)
+    dataset = dataset_loader.DataSet(FLAGS.dataset_dir, FLAGS.filename)
 
     ######################
     # Select the network #
     ######################
-    network_fn = metric_learning_net.get_network_fn(weight_decay=FLAGS.weight_decay, is_training=True)
+    network_fn = metric_learning_net.get_network_fn(embedding_dims=FLAGS.embedding_dims,
+                                                    weight_decay=FLAGS.weight_decay,
+                                                    network_model=FLAGS.network_model,
+                                                    is_training=True)
+    train_image_size = FLAGS.train_image_size or network_fn.default_image_size
 
     #####################################
     # Select the preprocessing function #
@@ -441,42 +455,9 @@ def main(_):
     ##############################################################
     with tf.device(deploy_config.inputs_device()):
       # create the filename and label example
-      # dataset = metric_learning_net.DataSet(FLAGS.dataset_dir, FLAGS.filename)
-      # path_list, id_list, cls_list, color_list, attr_list = dataset.load_dataset_info()
-      #
-      # # num_samples = len(path_list)
-      # path_list = tf.convert_to_tensor(path_list, dtype=tf.string)
-      # # id_list = tf.convert_to_tensor(id_list, dtype=tf.int32)
-      # cls_list = tf.convert_to_tensor(cls_list, dtype=tf.int32)
-      # color_list = tf.convert_to_tensor(color_list, dtype=tf.int32)
-      # attr_list = tf.convert_to_tensor(attr_list, dtype=tf.int32)
-      #
-      # image_path, cls_label, clr_label, attr_label = \
-      #     tf.train.slice_input_producer([path_list, cls_list, color_list, attr_list], FLAGS.num_epochs)
-      #
-      # train_image_size = FLAGS.train_image_size or network_fn.default_image_size
-      #
-      # # decode and preprocess the image
-      # file_content = tf.read_file(image_path)
-      # image = tf.image.decode_image(file_content, channels=3)
-      # image = metric_learning_net.preprocessing(image, train_image_size, train_image_size, channels=3)
-      #
-      # # transform the image_label to one hot encoding
-      # cls_label = slim.one_hot_encoding(cls_label, dataset.num_cls)
-      # clr_label = slim.one_hot_encoding(clr_label, dataset.num_clr)
-      #
-      # # batching images and labels
-      # images, cls_labels, clr_labels, attr_labels = \
-      #     tf.train.batch([image, cls_label, clr_label, attr_label], FLAGS.batch_size,
-      #                    capacity=5 * FLAGS.batch_size, num_threads=FLAGS.num_preprocessing_threads)
-      #
-      # batch_queue = slim.prefetch_queue.prefetch_queue(
-      #     [images, cls_labels, clr_labels, attr_labels], capacity=2 * deploy_config.num_clones)
-      dataset = metric_learning_net.DataSet(FLAGS.dataset_dir, FLAGS.filename)
-      train_image_size = FLAGS.train_image_size or network_fn.default_image_size
-      images, cls_labels, clr_labels, attr_labels = dataset.load_inputs(FLAGS.batch_size, FLAGS.num_epochs,
-                                           image_size=train_image_size, include_img_id=False)
-      batch_queue = slim.prefetch_queue.prefetch_queue([images, cls_labels, clr_labels, attr_labels],
+      images, img_id, cls_labels, clr_labels, attr_labels = dataset.load_inputs(FLAGS.batch_size, FLAGS.num_epochs,
+                                           image_size=train_image_size, include_img_id=True)
+      batch_queue = slim.prefetch_queue.prefetch_queue([images, img_id, cls_labels, clr_labels, attr_labels],
                                                        capacity=2 * deploy_config.num_clones)
 
     ####################
@@ -485,21 +466,30 @@ def main(_):
     def clone_fn(batch_queue):
       """Allows data parallelism by creating multiple clones of network_fn."""
       with tf.device(deploy_config.inputs_device()):
-        image_batch, cls_label_batch, clr_label_batch, attr_label_batch = batch_queue.dequeue()
+        image_batch, image_id_batch, cls_label_batch, clr_label_batch, attr_label_batch = batch_queue.dequeue()
       cls_logits, clr_logits, attr_logits, prelogits, end_points = network_fn(image_batch)
 
       #############################
       # Specify the loss function #
       #############################
+      # center loss etc.
+      if FLAGS.loss_model == 'center_loss':
+          tf.logging.info('chose center loss')
+          prelogits_center_loss, _ = metric_learning_net.center_loss(prelogits, image_id_batch,
+                                                           FLAGS.center_moving_average_ratio, dataset.num_id)
+          tf.add_to_collection(tf.GraphKeys.LOSSES, prelogits_center_loss * FLAGS.image_id_weight)
+      else:
+          pass
+
       tf.losses.softmax_cross_entropy(
           logits=cls_logits, onehot_labels=cls_label_batch,
-          label_smoothing=FLAGS.label_smoothing, weights=1.0)
+          label_smoothing=FLAGS.label_smoothing, weights=FLAGS.class_weight)
       tf.losses.softmax_cross_entropy(
           logits=clr_logits, onehot_labels=clr_label_batch,
-          label_smoothing=FLAGS.label_smoothing, weights=1.0)
+          label_smoothing=FLAGS.label_smoothing, weights=FLAGS.color_weight)
       tf.losses.sigmoid_cross_entropy(
           logits=attr_logits, multi_class_labels=attr_label_batch,
-          label_smoothing=FLAGS.label_smoothing, weights=1.0)
+          label_smoothing=FLAGS.label_smoothing, weights=FLAGS.attribute_weight)
       return end_points
 
     # Gather initial summaries.

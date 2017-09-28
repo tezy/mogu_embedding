@@ -15,27 +15,27 @@ import numpy as np
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
 
-# image_dataset_dir = '/raid5data/dplearn/taobao/crawler_tbimg/mimages'
-#
-# data_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding'
-# data_file = 'mogujie_r.json'
-#
-# save_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding'
-#
-# cid_attr_file = 'mogu_category_attrs.json'
-# mogu_valid_json = 'mogu_valid.json'
-# image_path_file = 'image_path.txt'
+image_dataset_dir = '/raid5data/dplearn/taobao/crawler_tbimg/mimages'
 
-image_dataset_dir = '/home/tze/Tmp/taobao_stn'
-
-data_dir = '/home/tze'
+data_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding'
 data_file = 'mogujie_r.json'
 
-save_dir = '/home/tze'
+save_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding'
 
 cid_attr_file = 'mogu_category_attrs.json'
 mogu_valid_json = 'mogu_valid.json'
 image_path_file = 'image_path.txt'
+
+# image_dataset_dir = '/home/tze/Tmp/taobao_stn'
+#
+# data_dir = '/home/tze'
+# data_file = 'mogujie_r.json'
+#
+# save_dir = '/home/tze'
+#
+# cid_attr_file = 'mogu_category_attrs.json'
+# mogu_valid_json = 'mogu_valid.json'
+# image_path_file = 'image_path.txt'
 
 src_dir = '/raid5data/dplearn/taobao/crawler_tbimg/mimages'
 
@@ -45,7 +45,7 @@ NUM_ATTR_KEY = 128
 num_class_by_hand = 237
 num_attr_key = 121
 num_attr_val = 1160
-num_color_val = 118
+num_color_val = 75
 avg_images_per_id = 5
 
 train_set_keep_prob = 0.7
@@ -526,6 +526,122 @@ def create_train_eval_set_ahocorasick():
                 else:
                     for path in file_paths:
                         eval_save_info.append((path, cls_label, color_labels, attr_labels))
+
+        if train_save_info:
+            train_set_writer.writerows(train_save_info)
+        if eval_save_info:
+            eval_set_writer.writerows(eval_save_info)
+
+
+def create_train_eval_set_ahocorasick_with_image_id_color_bytze():
+    with open(os.path.join(save_dir, 'mogu_cls_label_v1.json'), 'r') as f:
+        cls_label_dict = json.loads(f.readline().strip())
+    with open(os.path.join(save_dir, 'mogu_color_val.json'), 'r') as f:
+        color_label_dict = json.loads(f.readline().strip())
+    with open(os.path.join(save_dir, 'mogu_selected_attr.json'), 'r') as f:
+        attr_label_dict = json.loads(f.readline().strip())
+    with open(os.path.join(save_dir, 'mogu_color_val_tze.json'), 'r') as f:
+        color_label_dict_fin = json.loads(f.readline().strip())
+
+    selected_cid = set(cls_label_dict.keys())
+    color_attr_in_chinese = u'\u989c\u8272'
+
+    color_aho = ahocorasick.Automaton()
+    # attr_aho = ahocorasick.Automaton()
+    for color, label in color_label_dict.items():
+        color_aho.add_word(color.encode('utf-8'), (label, color))
+    color_aho.make_automaton()
+
+    with open(os.path.join(save_dir, mogu_valid_json), 'r') as f, \
+         open(os.path.join(save_dir, 'mogu_train_full_info_color_tze.csv'), 'wb') as g, \
+         open(os.path.join(save_dir, 'mogu_eval_rest_color_tze.csv'), 'wb') as h:
+
+        train_set_writer = csv.writer(g)
+        eval_set_writer = csv.writer(h)
+        train_save_info = []
+        eval_save_info = []
+
+        keep_prob = 0.8
+        #image_id = 0
+        qualified_image_id = 0
+        #eval_image_id = 0
+        num_imgs_thresh = 2
+        for line in f:
+            data = json.loads(line)
+            cid_str = data['cid']
+            iid_str = data['iid']
+            im_list = data['im_list']
+            attr_dict = data['attributes']
+
+            if cid_str in selected_cid:
+                folder_path = os.path.join(src_dir, cid_str)
+                num_files = len(im_list)
+                file_paths = [os.path.join(folder_path, '{}_{}.jpg'.format(iid_str, idx)) for idx in range(num_files)]
+
+                #image_id_label = str(image_id)
+                #image_id += 1
+
+                cls_label = str(cls_label_dict[cid_str])
+
+                if attr_dict.has_key(color_attr_in_chinese):
+                    color_list = _clean_text(attr_dict[color_attr_in_chinese])
+
+                    color_labels = []
+                    for clr in color_list:
+                        max_len_clr_str = None
+                        max_len = 0
+                        for _, label_wd in color_aho.iter(clr.encode('utf-8')):
+                            if len(label_wd[1]) > max_len:
+                                max_len_clr_str = label_wd[1]
+
+                        if max_len_clr_str:
+                            for color_vals_str, label in color_label_dict_fin.items():
+                                color_vals = color_vals_str.split()
+                                if max_len_clr_str in color_vals:
+                                    if str(label) not in color_labels:
+                                        color_labels.append(str(label))
+                                        break
+
+                    if color_labels:
+                        color_labels = ' '.join(color_labels)
+                    else:
+                        color_labels = '-1'
+                else:
+                    color_labels = '-1'
+
+                attr_labels = []
+                for attr_key, attr_text in attr_dict.items():
+                    attr_val_list = _clean_text(attr_text)
+                    labels = [str(attr_label_dict[attr_key][attr_val]) for attr_val in attr_val_list
+                              if attr_label_dict.has_key(attr_key) and attr_label_dict[attr_key].has_key(attr_val)]
+                    attr_labels.extend(labels)
+
+                if attr_labels:
+                    attr_labels = ' '.join(attr_labels)
+                else:
+                    attr_labels = '-1'
+
+                if _qualified_data_record(color_labels, attr_labels) and num_files >= num_imgs_thresh:
+                    qualified_image_id_label = str(qualified_image_id)
+                    qualified_image_id += 1
+
+                    if num_files == num_imgs_thresh:
+                        for path in file_paths:
+                            train_save_info.append(
+                                (path, qualified_image_id_label, cls_label, color_labels, attr_labels))
+                    else:
+                        num_samples_for_eval = int((1.0 - keep_prob) * num_files + 1.0)
+                        eval_idx = random.sample(range(num_files), num_samples_for_eval)
+                        for idx, path in enumerate(file_paths):
+                            if idx in eval_idx:
+                                eval_save_info.append(
+                                    (path, qualified_image_id_label, cls_label, color_labels, attr_labels))
+                            else:
+                                train_save_info.append(
+                                    (path, qualified_image_id_label, cls_label, color_labels, attr_labels))
+                # else:
+                #     for path in file_paths:
+                #         eval_save_info.append((path, image_id_label, cls_label, color_labels, attr_labels))
 
         if train_save_info:
             train_set_writer.writerows(train_save_info)

@@ -5,6 +5,7 @@ import tensorflow.contrib.slim as slim
 
 from datetime import datetime
 from model import metric_learning_net
+from data import dataset_loader
 
 weight_decay = 4e-5
 label_smoothing = 0.1
@@ -127,7 +128,7 @@ def main():
     batch_size = 16
     num_epochs = 20
     image_size = 299
-    dataset = metric_learning_net.DataSet(filename_dir, filename)
+    dataset = dataset_loader.DataSet(filename_dir, filename)
     images, cls_labels, clr_labels, attr_labels = dataset.load_inputs(batch_size, num_epochs)
 
     global_step = slim.create_global_step()

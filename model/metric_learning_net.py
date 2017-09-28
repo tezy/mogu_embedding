@@ -25,7 +25,7 @@ from nets import inception_v4
 # image_path_file = 'image_path.txt
 
 NUM_CLS = 35
-NUM_COLOR = 75
+NUM_CLR = 75
 NUM_ATTR = 1160
 INPUT_IMAGE_SIZE = 299
 
@@ -60,7 +60,7 @@ def center_loss(embedding_batch, update_idx, alpha, num_classes):
        Args:
            embedding_batch: the batch of the new embeddings
            update_idx: the the centers to be updated
-           alpha: centers decay ratio
+           alpha: centers decay ratio, the ratio of previous center values
            num_classes: the overall num classes
 
        Returns:
@@ -80,176 +80,62 @@ def center_loss(embedding_batch, update_idx, alpha, num_classes):
     return loss, centers
 
 
-def image_info_loader(dataset_dir, filename):
-    image_path = []
-    image_id_label = []
-    image_cls_label = []
-    image_color_label = []
-    image_attr_label = []
-    with open(os.path.join(dataset_dir, filename), 'r') as f:
-        csv_reader = csv.reader(f)
-        for line in csv_reader:
-            image_path.append(line[0])
-            image_id_label.append(int(line[1]))
-            image_cls_label.append(int(line[2]))
-            image_color_label.append(int(line[3]))
+def lables_from_embedding(inputs, embedding_dims=128, weight_decay=0.00004, is_training=True,
+                          reuse=None, scope='InceptionV4'):
 
-            # color_label = [int(label) for label in line[3].split()]
-            attr_labels = [int(label) for label in line[4].split()]
-            attrs = [0] * NUM_ATTR
-            for idx in attr_labels:
-                attrs[idx] = 1
-            image_attr_label.append(attrs)
+    arg_scope = inception_v4.inception_v4_arg_scope(weight_decay=weight_decay)
+    with slim.arg_scope(arg_scope):
+        with tf.variable_scope(scope, 'InceptionV4', [inputs], reuse=reuse) as scope_in:
+            with slim.arg_scope([slim.batch_norm, slim.dropout], is_training=is_training):
+                net, end_points = inception_v4.inception_v4_base(inputs, scope=scope_in)
 
-    return image_path, image_id_label, image_cls_label, image_color_label, image_attr_label
+                with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d],
+                                    stride=1, padding='SAME'):
+                    # Final pooling and prediction
+                    with tf.variable_scope('Embeddings'):
+                        # 8 x 8 x 1536
+                        net = slim.avg_pool2d(net, net.get_shape()[1:3], padding='VALID',
+                                              scope='AvgPool_1a')
+                        # 1 x 1 x 1536
+                        #net = slim.dropout(net, dropout_keep_prob, scope='Dropout_1b')
+                        net = slim.flatten(net, scope='PreLogitsFlatten')
+                        end_points['PreLogitsFlatten'] = net
+                        # 1536 --> embedding dims
+                        prelogits = slim.fully_connected(net, embedding_dims, activation_fn=None,
+                                                         scope='Prelogits')
+                        end_points['Prelogits'] = prelogits
 
+                    with tf.variable_scope('Logits'):
+                        cls_logits = slim.fully_connected(prelogits, NUM_CLS, scope='FC_Classes_0')
+                        cls_logits = slim.fully_connected(cls_logits, NUM_CLS, activation_fn=None,
+                                                          normalizer_fn=None, normalizer_params=None,
+                                                          scope='FC_Classes_1')
+                        end_points['ClassLogits'] = cls_logits
 
-class DataSet(object):
-    num_cls = 35
-    num_clr = 75
-    num_attr = 1160
+                        clr_logits = slim.fully_connected(prelogits, NUM_CLR, scope='FC_Colors_0')
+                        clr_logits = slim.fully_connected(clr_logits, NUM_CLR, activation_fn=None,
+                                                          normalizer_fn=None, normalizer_params=None,
+                                                          scope='FC_Colors_1')
+                        end_points['ColorLogits'] = clr_logits
 
-    def __init__(self, dataset_dir, filename):
-        self._file_record_path = os.path.join(dataset_dir, filename)
-        self._image_path = []
-        self._image_id_label = []
-        self._image_cls_label = []
-        self._image_color_label = []
-        self._image_attr_label = []
-        with open(self._file_record_path, 'r') as f:
-            csv_reader = csv.reader(f)
-            for line in csv_reader:
-                self._image_path.append(line[0])
-                self._image_id_label.append(int(line[1]))
-                self._image_cls_label.append(int(line[2]))
-                self._image_color_label.append(int(line[3]))
-                self._image_attr_label.append([int(label) for label in line[4].strip().split()])
+                        attr_logits = slim.fully_connected(prelogits, NUM_ATTR, activation_fn=None,scope='FC_Attributes_0')
+                        attr_logits = slim.fully_connected(attr_logits, NUM_ATTR, activation_fn=None,
+                                                           normalizer_fn=None, normalizer_params=None,
+                                                           scope='FC_Attributes_1')
+                        end_points['AttributeLogits'] = attr_logits
 
-    def _process_attr_label(self):
-        image_attr_label_array = []
-        for attr_labels in self._image_attr_label:
-            attrs = [0] * self.num_attr
-            for idx in attr_labels:
-                attrs[idx] = 1
-                image_attr_label_array.append(attrs)
-
-        return image_attr_label_array
-
-    def load_inputs(self, batch_size, num_epochs=None, num_threads=4, image_size=299, include_img_id=False):
-        # create the filename and label example
-        attr_list = self._process_attr_label()
-        if include_img_id:
-            inputs_info = tf.train.slice_input_producer([self._image_path,
-                                                         self._image_cls_label,
-                                                         self._image_color_label,
-                                                         attr_list,
-                                                         self._image_id_label], num_epochs)
-        else:
-            inputs_info = tf.train.slice_input_producer([self._image_path,
-                                                         self._image_cls_label,
-                                                         self._image_color_label,
-                                                         attr_list], num_epochs)
-
-        # decode and preprocess the image
-        file_content = tf.read_file(inputs_info[0])
-        image = tf.image.decode_image(file_content, channels=3)
-        image = preprocessing(image, image_size, image_size, channels=3)
-
-        # transform the image_label to one hot encoding
-        cls_label = slim.one_hot_encoding(inputs_info[1], self.num_cls)
-        clr_label = slim.one_hot_encoding(inputs_info[2], self.num_clr)
-        attr_label = inputs_info[3]
-
-        # batching images and labels
-        if include_img_id:
-            id_label = inputs_info[4]
-            inputs_batch = tf.train.batch([image, id_label, cls_label, clr_label, attr_label],
-                                          batch_size, capacity=5*batch_size, num_threads=num_threads)
-        else:
-            inputs_batch = tf.train.batch([image, cls_label, clr_label, attr_label],
-                                          batch_size, capacity=5*batch_size, num_threads=num_threads)
-
-        return inputs_batch
-
-    @property
-    def num_samples(self):
-        return len(self._image_path)
+            return cls_logits, clr_logits, attr_logits, prelogits, end_points
 
 
-def inputs_loader(dataset_dir, filename, batch_size, num_epochs, height, width):
-    # create the filename and label example
-    path_list, _, cls_list, color_list, attr_list = image_info_loader(dataset_dir, filename)
-    path_list = tf.convert_to_tensor(path_list, dtype=tf.string)
-    #id_list = tf.convert_to_tensor(id_list, dtype=tf.int32)
-    cls_list = tf.convert_to_tensor(cls_list, dtype=tf.int32)
-    color_list = tf.convert_to_tensor(color_list, dtype=tf.int32)
-    attr_list = tf.convert_to_tensor(attr_list, dtype=tf.int32)
-
-    image_path, cls_label, clr_label, attr_label = \
-        tf.train.slice_input_producer([path_list, cls_list, color_list, attr_list], num_epochs)
-
-    # decode and preprocess the image
-    file_content = tf.read_file(image_path)
-    image = tf.image.decode_image(file_content, channels=3)
-    image = preprocessing(image, height, width, channels=3)
-
-    # transform the image_label to one hot encoding
-    cls_label = slim.one_hot_encoding(cls_label, NUM_CLS)
-    clr_label = slim.one_hot_encoding(clr_label, NUM_COLOR)
-
-    # batching images and labels
-    num_threads = 4
-    min_after_dequeue = 13 * batch_size
-    capacity = min_after_dequeue + 3 * batch_size
-    image_batch, cls_label_batch, clr_label_batch, attr_label_batch = \
-        tf.train.batch([image, cls_label, clr_label, attr_label], batch_size,
-                       capacity=capacity, num_threads=num_threads)
-
-    return image_batch, cls_label_batch, clr_label_batch, attr_label_batch
-
-
-def get_network_fn(embedding_dims = 128, num_cls=35, num_clr = 75, num_attrs = 1160, weight_decay=0.0004,
-                   is_training=True, dropout_keep_prob=0.8, reuse=None, scope='InceptionV4'):
+def get_network_fn(embedding_dims=128, network_model='labels_from_embedding',
+                   weight_decay=0.00004, is_training=True):
 
     DEFAULT_SIZE = 299
+    network_map = {'labels_from_embedding': lables_from_embedding}
+    fn = network_map[network_model]
+
     def network_fn(inputs):
-        arg_scope = inception_v4.inception_v4_arg_scope(weight_decay=weight_decay)
-        with slim.arg_scope(arg_scope):
-            with tf.variable_scope(scope, 'InceptionV4', [inputs], reuse=reuse) as scope_in:
-                with slim.arg_scope([slim.batch_norm, slim.dropout], is_training=is_training):
-                    net, end_points = inception_v4.inception_v4_base(inputs, scope=scope_in)
-
-                    with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d],
-                                        stride=1, padding='SAME'):
-                        # Final pooling and prediction
-                        with tf.variable_scope('Embeddings'):
-                            # 8 x 8 x 1536
-                            net = slim.avg_pool2d(net, net.get_shape()[1:3], padding='VALID',
-                                                  scope='AvgPool_1a')
-                            # 1 x 1 x 1536
-                            # net = slim.dropout(net, dropout_keep_prob, scope='Dropout_1b')
-                            net = slim.flatten(net, scope='PreLogitsFlatten')
-                            end_points['PreLogitsFlatten'] = net
-                            # 1536 --> 128 embedding dims
-                            prelogits = slim.fully_connected(net, embedding_dims, activation_fn=None,
-                                                             scope='Prelogits')
-                            end_points['Prelogits'] = prelogits
-
-                        with tf.variable_scope('Logits'):
-                            cls_logits = slim.fully_connected(prelogits, num_cls, activation_fn=None,
-                                                              normalizer_fn=None, normalizer_params=None,
-                                                              scope='Classes')
-                            end_points['ClassLogits'] = cls_logits
-                            clr_logits = slim.fully_connected(prelogits, num_clr, activation_fn=None,
-                                                              normalizer_fn=None, normalizer_params=None,
-                                                              scope='Colors')
-                            end_points['ColorLogits'] = clr_logits
-                            attr_logits = slim.fully_connected(prelogits, num_attrs, activation_fn=None,
-                                                               normalizer_fn=None, normalizer_params=None,
-                                                               scope='Attributes')
-                            end_points['AttributeLogits'] = attr_logits
-
-                return cls_logits, clr_logits, attr_logits, prelogits, end_points
+        return fn(inputs, embedding_dims, weight_decay, is_training)
 
     network_fn.default_image_size = DEFAULT_SIZE
 
@@ -325,45 +211,11 @@ def decode_image(file_content):
     return Image.fromarray(image.astype(np.uint8))
 
 
-def main():
-    # inputs = tf.placeholder(dtype=tf.float32, shape=[None, 299, 299, 3])
-    # network_fn = get_network_fn()
-    # cls_logits, clr_logits, attr_logits, prelogits, _ = network_fn(inputs)
-    #
-    # for var in tf.get_collection(tf.GraphKeys.MODEL_VARIABLES):
-    #     print(var)
-    dataset_dir = '/home/tze/Learning/dataset/mogu_embedding'
-    filename = 'sample_local.csv'
-    dataset = DataSet(dataset_dir, filename)
-    inputs, cls_labels, clr_labels, attr_labels = dataset.load_inputs(8, 20, 299)
-
-    # inputs, cls_labels, clr_labels, attr_labels = inputs_loader(dataset_dir, filename, 1, 20, 299, 299)
-
-    with tf.Session() as sess:
-        init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
-        sess.run(init_op)
-
-        coord = tf.train.Coordinator()
-        threads = tf.train.start_queue_runners(sess=sess, coord=coord)
-        count = 0
-        try:
-            while not coord.should_stop():
-                # Run training steps or whatever
-                image, cls, clr, attr = sess.run([inputs, cls_labels, clr_labels, attr_labels])
-                print(count)
-                count += 1
-        except tf.errors.OutOfRangeError:
-            print('Done training -- epoch limit reached')
-        finally:
-            # When done, ask the threads to stop.
-            coord.request_stop()
-
-        # Wait for threads to finish.
-        coord.join(threads)
-
-
-if __name__ == '__main__':
-    main()
+# def test():
+#    pass
+#
+# if __name__ == '__main__':
+#     main()
 
 
 

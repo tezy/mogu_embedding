@@ -23,18 +23,19 @@ import tensorflow as tf
 
 from tensorflow.contrib import slim
 from model import model_deploy, metric_learning_net
+from data import dataset_loader
 
 
-# filename = 'mogu_full_info_one_color_train.csv'
-# filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding'
-# save_dir = '/home/deepinsight/tongzhen/vars/mogu_embedding'
-# ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
+filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding/classifier_sample'
+filename = 'mogu_full_info_one_color_train.csv'
+save_dir = '/home/deepinsight/tongzhen/vars/mogu_embedding'
+ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
 
 
-filename_dir = '/home/tze/Learning/dataset/mogu_embedding'
-filename = 'sample_local.csv'
-save_dir = '/home/tze/Learning/vars/mogu_embedding'
-ckpt_dir = '/home/tze/Learning/ckpt/standard/inception_v4.ckpt'
+# filename_dir = '/home/tze/Learning/dataset/mogu_embedding'
+# filename = 'sample_local.csv'
+# save_dir = '/home/tze/Learning/vars/mogu_embedding'
+# ckpt_dir = '/home/tze/Learning/ckpt/standard/inception_v4.ckpt'
 
 train_partial_layers = True
 trainable_scopes = ','.join(['InceptionV4/Logits', 'InceptionV4/Embeddings', 'InceptionV4/Mixed_7d']) \
@@ -472,7 +473,7 @@ def main(_):
       #
       # batch_queue = slim.prefetch_queue.prefetch_queue(
       #     [images, cls_labels, clr_labels, attr_labels], capacity=2 * deploy_config.num_clones)
-      dataset = metric_learning_net.DataSet(FLAGS.dataset_dir, FLAGS.filename)
+      dataset = dataset_loader.DataSet(FLAGS.dataset_dir, FLAGS.filename)
       train_image_size = FLAGS.train_image_size or network_fn.default_image_size
       images, cls_labels, clr_labels, attr_labels = dataset.load_inputs(FLAGS.batch_size, FLAGS.num_epochs,
                                            image_size=train_image_size, include_img_id=False)
