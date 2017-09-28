@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="391d9d73-c58a-4a10-8c7d-baed1101bae8" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/cub200.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tmp_c.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/data_process.py" afterPath="$PROJECT_DIR$/data/data_process.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/metric_learning_net.py" afterPath="$PROJECT_DIR$/model/metric_learning_net.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/tmp.py" afterPath="$PROJECT_DIR$/tests/tmp.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/train_image_classifier.py" afterPath="$PROJECT_DIR$/train_image_classifier.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/train_image_retrieval.py" afterPath="$PROJECT_DIR$/train_image_retrieval.py" />
-    </list>
+    <list default="true" id="391d9d73-c58a-4a10-8c7d-baed1101bae8" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +68,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="train_image_retrieval.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="train_image_retrieval.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/train_image_retrieval.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="560">
@@ -85,6 +76,16 @@
               <folding>
                 <element signature="e#759#797#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -150,8 +151,8 @@
       <find>attribute_weight</find>
       <find>network_model</find>
       <find>image_id_weight</find>
-      <find>checkpoint_exclude_scopes</find>
       <find>filename_dir</find>
+      <find>checkpoint_exclude_scopes</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -183,6 +184,7 @@
         <option value="$PROJECT_DIR$/data/dataset_loader.py" />
         <option value="$PROJECT_DIR$/train_image_retrieval.py" />
         <option value="$PROJECT_DIR$/train_image_classifier.py" />
+        <option value="$PROJECT_DIR$/data/__init__.py" />
       </list>
     </option>
   </component>
@@ -485,9 +487,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="73" y="-5" width="1847" height="1085" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18920423" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18920423" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -517,14 +518,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/ops/variable_scope.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-565">
-          <caret line="1431" column="24" lean-forward="false" selection-start-line="1431" selection-start-column="19" selection-end-line="1431" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Apps/anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/contrib/framework/python/ops/arg_scope.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="201">
@@ -936,6 +929,14 @@
           <folding>
             <element signature="e#759#797#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
