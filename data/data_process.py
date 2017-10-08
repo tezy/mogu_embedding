@@ -212,7 +212,7 @@ def create_selected_attr_key_val():
 
     for attr_k, attr_val_dict in attr_key_val_dict.items():
         sorted_attr_val_dict = sorted(attr_val_dict.items(), key=lambda kv: kv[1], reverse=True)
-        val_kv = zip(*sorted_attr_val_dict)
+        val_kv = list(zip(*sorted_attr_val_dict))
         sum_val_counts = sum(val_kv[1])
         val_counts_share = sum_val_counts * attr_val_share_thresh
 
@@ -846,7 +846,7 @@ def _clean_text(line):
     # line = p_0.sub(u'', line)
 
     # seek alpha, num, chinese character, dash, brackets (both chinese and english)
-    p_1 = re.compile(r'[\w\u4e00-\u9fa5\-\uff08\uff09\(\)]+')
+    p_1 = re.compile(u'[\w\u4e00-\u9fa5\-\uff08\uff09\(\)]+')
     words = p_1.findall(line)
     return words
 

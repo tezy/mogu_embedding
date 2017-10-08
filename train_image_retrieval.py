@@ -26,7 +26,7 @@ from model import model_deploy, metric_learning_net
 from data import dataset_loader
 
 
-filename = 'mogu_full_info_one_color_train.csv'
+filename = 'mogu_train_fin_tze_least_3.csv'
 filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding/metric_learning_sample'
 save_dir = '/home/deepinsight/tongzhen/vars/mogu_embedding'
 ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
@@ -37,7 +37,7 @@ ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
 # save_dir = '/home/tze/Learning/vars/mogu_embedding'
 # ckpt_dir = '/home/tze/Learning/ckpt/standard/inception_v4.ckpt'
 
-train_partial_layers = None
+train_partial_layers = True
 trainable_scopes = ','.join(['InceptionV4/Logits', 'InceptionV4/Embeddings', 'InceptionV4/Mixed_7d']) \
     if train_partial_layers else None
 checkpoint_exclude_scopes = trainable_scopes
@@ -455,7 +455,8 @@ def main(_):
     ##############################################################
     with tf.device(deploy_config.inputs_device()):
       # create the filename and label example
-      images, img_id, cls_labels, clr_labels, attr_labels = dataset.load_inputs(FLAGS.batch_size, FLAGS.num_epochs,
+      images, img_id, cls_labels, clr_labels, attr_labels = \
+          dataset.input_pipeline_tfrecords(FLAGS.batch_size, FLAGS.num_epochs,
                                            image_size=train_image_size, include_img_id=True)
       batch_queue = slim.prefetch_queue.prefetch_queue([images, img_id, cls_labels, clr_labels, attr_labels],
                                                        capacity=2 * deploy_config.num_clones)

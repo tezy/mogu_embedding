@@ -1,6 +1,10 @@
 import os
 import csv
+import codecs
+import random
+import numpy as np
 import tensorflow as tf
+from PIL import Image
 
 from tensorflow.contrib import slim
 
@@ -16,13 +20,14 @@ class DataSet(object):
     num_attr = 1160
 
     def __init__(self, dataset_dir, filename):
+        self._dataset_dir = dataset_dir
         self._file_record_path = os.path.join(dataset_dir, filename)
         self._image_path = []
         self._image_id_label = []
         self._image_cls_label = []
         self._image_color_label = []
         self._image_attr_label = []
-        with open(self._file_record_path, 'r') as f:
+        with codecs.open(self._file_record_path, 'r', 'utf-8') as f:
             csv_reader = csv.reader(f)
             for line in csv_reader:
                 self._image_path.append(line[0])
@@ -77,6 +82,90 @@ class DataSet(object):
 
         return inputs_batch
 
+    def _bytes_feature(self, value):
+        return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
+
+    def _int64_feature(self, value):
+        return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
+
+    def _int64_list_feature(self, value):
+        return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
+
+    def _data_shuffle(self):
+        attr_array_label = self._process_attr_label()
+        dataset_info = list(zip(self._image_path, self._image_id_label, self._image_cls_label,
+                                self._image_color_label, attr_array_label))
+        random.shuffle(dataset_info)
+        return dataset_info
+
+    def create_tfrecords(self):
+        tfrecords_name = 'mogu_image_info.tfrecords'
+        tfrecords_path = os.path.join(self._dataset_dir, tfrecords_name)
+        if os.path.exists(tfrecords_path):
+            return
+        else:
+            shuffled_dataset_info = self._data_shuffle()
+            writer = tf.python_io.TFRecordWriter(tfrecords_path)
+
+            for path, id, clz, clr, attr_list in shuffled_dataset_info:
+                example = tf.train.Example(features=tf.train.Features(feature={
+                    'image_path': self._bytes_feature(path.encode()),
+                    'image_id': self._int64_feature(id),
+                    'class_label': self._int64_feature(clz),
+                    'color_label': self._int64_feature(clr),
+                    'attribute_label': self._int64_list_feature(attr_list)
+                }))
+
+                writer.write(example.SerializeToString())
+
+            writer.close()
+
+    def input_pipeline_tfrecords(self, batch_size, num_epochs=None, num_threads=4, image_size=299, include_img_id=False):
+        tfrecords_name = 'mogu_image_info.tfrecords'
+        tfrecords_path = os.path.join(self._dataset_dir, tfrecords_name)
+        if not os.path.exists(tfrecords_path):
+            self.create_tfrecords()
+
+        filename_queue = tf.train.string_input_producer([tfrecords_path], num_epochs=num_epochs)
+
+        reader = tf.TFRecordReader()
+
+        _, serialized_example = reader.read(filename_queue)
+        features = {
+            'image_path': tf.FixedLenFeature([], tf.string),
+            'image_id': tf.FixedLenFeature([], tf.int64),
+            'class_label': tf.FixedLenFeature([], tf.int64),
+            'color_label': tf.FixedLenFeature([], tf.int64),
+            'attribute_label': tf.FixedLenFeature([self.num_attr], tf.int64)
+        }
+        inputs_info = tf.parse_single_example(serialized_example, features=features)
+
+        # decode and preprocess the image
+        file_content = tf.read_file(inputs_info['image_path'])
+        image = tf.image.decode_image(file_content, channels=3)
+        image = preprocessing(image, image_size, image_size, channels=3)
+        # image = inputs_info['image_path']
+
+        # transform the image_label to one hot encoding
+        cls_label = slim.one_hot_encoding(inputs_info['class_label'], self.num_cls)
+        clr_label = slim.one_hot_encoding(inputs_info['color_label'], self.num_clr)
+        attr_label = inputs_info['attribute_label']
+
+        min_after_dequeue = 100
+        capacity = min_after_dequeue + 3*batch_size
+        # batching images and labels
+        if include_img_id:
+            id_label = inputs_info['image_id']
+            inputs_batch = tf.train.shuffle_batch([image, id_label, cls_label, clr_label, attr_label],
+                                                  batch_size, capacity=capacity, min_after_dequeue=min_after_dequeue,
+                                                  num_threads=num_threads)
+        else:
+            inputs_batch = tf.train.shuffle_batch([image, cls_label, clr_label, attr_label],
+                                                  batch_size, capacity=capacity, min_after_dequeue=min_after_dequeue,
+                                                  num_threads=num_threads)
+
+        return inputs_batch
+
     @property
     def num_samples(self):
         return len(self._image_path)
@@ -84,6 +173,18 @@ class DataSet(object):
     @property
     def num_image_id(self):
         return self._image_id_label[-1] + 1
+
+#
+# def _bytes_feature(value):
+#     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
+#
+#
+# def _int64_feature(value):
+#     return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
+#
+#
+# def _int64_list_feature(value):
+#     return tf.train.Feature(int64_list=tf.train.Int64List(value=value))
 
 
 def image_info_loader(dataset_dir, filename):
@@ -159,6 +260,12 @@ def preprocessing(image, height, width, channels, augment=False):
     return image
 
 
+def decode_image(file_content):
+    image = file_content / 2.0
+    image = image + 0.5
+    image = image * 255.0
+    return Image.fromarray(image.astype(np.uint8))
+
 def main():
     # inputs = tf.placeholder(dtype=tf.float32, shape=[None, 299, 299, 3])
     # network_fn = get_network_fn()
@@ -169,7 +276,8 @@ def main():
     dataset_dir = '/home/tze/Learning/dataset/mogu_embedding'
     filename = 'sample_local.csv'
     dataset = DataSet(dataset_dir, filename)
-    inputs, cls_labels, clr_labels, attr_labels = dataset.load_inputs(8, 20, 299)
+    inputs, image_id, clz_label, clr_label, attr_labels = \
+        dataset.input_pipeline_tfrecords(batch_size=2, num_epochs=3, include_img_id=True)
 
     # inputs, cls_labels, clr_labels, attr_labels = inputs_loader(dataset_dir, filename, 1, 20, 299, 299)
 
@@ -179,19 +287,46 @@ def main():
 
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess=sess, coord=coord)
-        count = 0
-        try:
-            while not coord.should_stop():
-                # Run training steps or whatever
-                image, cls, clr, attr = sess.run([inputs, cls_labels, clr_labels, attr_labels])
-                print(count)
-                count += 1
-        except tf.errors.OutOfRangeError:
-            print('Done training -- epoch limit reached')
-        finally:
-            # When done, ask the threads to stop.
-            coord.request_stop()
+        # count = 0
+        # try:
+        #     while not coord.should_stop():
+        #         # Run training steps or whatever
+        #         image, cls, clr, attr = sess.run([inputs, cls_labels, clr_labels, attr_labels])
+        #         print(cls)
+        #         print(attr)
+        #         print('{:*^20}'.format(''))
+        #         print(count)
+        #         count += 1
+        # except tf.errors.OutOfRangeError:
+        #     print('Done training -- epoch limit reached')
+        # finally:
+        #     # When done, ask the threads to stop.
+        #     coord.request_stop()
 
+        # while not coord.should_stop():
+        #     # Run training steps or whatever
+        #     if count > 10:
+        #         coord.request_stop()
+        #     image, id, cls, clr, attr = sess.run([inputs, image_id, cls_labels, clr_labels, attr_labels])
+        #     print(id)
+        #     print(attr)
+        #     print('{:*^20}'.format(''))
+        #     count += 1
+
+        # Wait for threads to finish.
+        # coord.join(threads)
+    #
+        for batch_idx in range(3):
+            img, id, clz, clr, attr = sess.run([inputs, image_id, clz_label, clr_label, attr_labels])
+            print('*****batch: {}*****'.format(batch_idx))
+            print(img)
+            print(clz)
+            print(attr)
+            for idx, im in enumerate(img):
+                pic = decode_image(im)
+                pic.save(os.path.join(dataset_dir, 'tf_img_{}.jpg'.format(batch_idx*2+idx)))
+
+        coord.request_stop()
         # Wait for threads to finish.
         coord.join(threads)
 

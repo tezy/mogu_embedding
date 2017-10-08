@@ -26,8 +26,8 @@ from model import model_deploy, metric_learning_net
 from data import dataset_loader
 
 
-filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding/classifier_sample'
-filename = 'mogu_full_info_one_color_train.csv'
+filename = 'mogu_train_fin_tze_least_3.csv'
+filename_dir = '/home/deepinsight/tongzhen/data-set/mogu_embedding/metric_learning_sample'
 save_dir = '/home/deepinsight/tongzhen/vars/mogu_embedding'
 ckpt_dir = '/home/deepinsight/tongzhen/ckpt/standard/inception_v4.ckpt'
 
